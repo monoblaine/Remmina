@@ -49,4 +49,6 @@ typedef struct {
 
 GtkDialog *remmina_ext_exec_new(RemminaFile *remminafile, const char *remmina_ext_exec_type);
 
+void toggle_autokey_service();
+
 G_END_DECLS

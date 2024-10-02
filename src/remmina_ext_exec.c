@@ -61,6 +61,11 @@ static void wait_for_child(GPid pid, gint script_retval, gpointer data)
 	 * monitor each child opened, but it could be quit tricky and messy */
 }
 
+static void wait_for_child2(GPid pid, gint script_retval, gpointer data)
+{
+	g_spawn_close_pid(pid);
+}
+
 GtkDialog* remmina_ext_exec_new(RemminaFile* remminafile, const char *remmina_ext_exec_type)
 {
 	TRACE_CALL(__func__);
@@ -130,4 +135,26 @@ GtkDialog* remmina_ext_exec_new(RemminaFile* remminafile, const char *remmina_ex
 	}
 	g_free(cmd);
 	return FALSE;
+}
+
+void toggle_autokey_service()
+{
+	const gchar * const argv[] = { "xdotool", "key", "Super_R+Shift+F12", NULL };
+	GPid child_pid;
+	GError *error = NULL;
+	g_spawn_async(NULL,                         // cwd
+		argv,                                   // argv
+		NULL,                                   // envp
+		G_SPAWN_SEARCH_PATH |
+		G_SPAWN_SEARCH_PATH_FROM_ENVP |
+		G_SPAWN_DO_NOT_REAP_CHILD,              // flags
+		NULL,                                   // child_setup
+		NULL,                                   // child_setup user data
+		&child_pid,                             // pid location
+		&error);                                // error
+	if (!error) {
+		g_child_watch_add(child_pid, wait_for_child2, NULL);
+	} else {
+		g_error_free(error);
+	}
 }
