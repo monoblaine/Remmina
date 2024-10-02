@@ -480,6 +480,7 @@ static void rcw_kp_ungrab(RemminaConnectionWindow *cnnwin)
 #endif
 	cnnwin->priv->kbcaptured = FALSE;
 	cnnwin->priv->pointer_captured = FALSE;
+	remmina_public_send_notification("remmina-keyboard-grabbed-id", _("Keyboard UNGRABBED"), _("Keyboard UNGRABBED"));
 }
 
 static gboolean rcw_keyboard_grab_retry(gpointer user_data)
@@ -621,6 +622,7 @@ static void rcw_keyboard_grab(RemminaConnectionWindow *cnnwin)
 				cnnwin->priv->grab_retry_eventsourceid = 0;
 			}
 			cnnwin->priv->kbcaptured = TRUE;
+			remmina_public_send_notification("remmina-keyboard-grabbed-id", _("Keyboard GRABBED"), _("Keyboard GRABBED"));
 		}
 	} else {
 		rcw_kp_ungrab(cnnwin);
