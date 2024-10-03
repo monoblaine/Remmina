@@ -139,7 +139,7 @@ GtkDialog* remmina_ext_exec_new(RemminaFile* remminafile, const char *remmina_ex
 
 void toggle_autokey_service()
 {
-	const gchar * const argv[] = { "xdotool", "key", "Super_R+Shift+F12", NULL };
+	const gchar * const argv[] = { "autokey-run", "-T", "_", NULL };
 	GPid child_pid;
 	GError *error = NULL;
 	g_spawn_async(NULL,                         // cwd
